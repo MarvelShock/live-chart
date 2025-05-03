@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Live Chart</title>
+    <style>
+      body {
+        margin: 0;
+        background: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <img id="chart" width="800" height="600" style="background-color: transparent;" />
+    <script>
+      function refreshChart() {
+        const img = document.getElementById("chart");
+        const baseUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-B0pV5OgbRMGqo1doAJcesVhmDOTcmhhpaQqAlzluQGmC-uQwcUEU3iSjqkX1Tku5-ThDliYq_L7z/pubchart?oid=473830938&format=image";
+        img.src = baseUrl + "&t=" + new Date().getTime(); // cache-buster
+      }
+      refreshChart();
+      setInterval(refreshChart, 10000); // Refresh every 10 seconds
+    </script>
+  </body>
+</html>
