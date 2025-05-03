@@ -1,29 +1,43 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Live Chart</title>
-    <style>
-      body {
-        margin: 0;
-        background: transparent;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-      }
-    </style>
-  </head>
-  <body>
-    <img id="chart" width="800" height="600" style="background-color: transparent;" />
-    <script>
-      function refreshChart() {
-        const img = document.getElementById("chart");
-        const baseUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-B0pV5OgbRMGqo1doAJcesVhmDOTcmhhpaQqAlzluQGmC-uQwcUEU3iSjqkX1Tku5-ThDliYq_L7z/pubchart?oid=473830938&format=image";
-        img.src = baseUrl + "&t=" + new Date().getTime(); // cache-buster
-      }
-      refreshChart();
-      setInterval(refreshChart, 10000); // Refresh every 10 seconds
-    </script>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <title>Live Chart (No Flicker)</title>
+  <style>
+    html, body {
+      margin: 0;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    canvas {
+      background: transparent;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="chartCanvas" width="800" height="600"></canvas>
+
+  <script>
+    const canvas = document.getElementById("chartCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const baseUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-B0pV5OgbRMGqo1doAJcesVhmDOTcmhhpaQqAlzluQGmC-uQwcUEU3iSjqkX1Tku5-ThDliYq_L7z/pubchart?oid=473830938&format=image";
+
+    function drawChart() {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      };
+      img.src = baseUrl + "&t=" + new Date().getTime(); // force refresh
+    }
+
+    drawChart(); // initial load
+    setInterval(drawChart, 10000); // refresh every 10 seconds
+  </script>
+</body>
 </html>
