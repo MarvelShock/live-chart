@@ -25,12 +25,24 @@
     function updateChart() {
       const img = new Image();
       img.crossOrigin = "anonymous";
-      img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      img.src = baseUrl + "&t=" + Date.now(); // cache-busting
+      img.onload = () => {
+        // Clear canvas before drawing
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Draw the chart
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        
+        // Add text overlay
+        ctx.font = '24px Arial'; // Font size and family
+        ctx.fillStyle = 'white'; // Text color
+        ctx.textAlign = 'center'; // Align center
+        ctx.textBaseline = 'middle'; // Align text vertically
+        ctx.fillText('Live Data Chart', canvas.width / 2, 30); // Position text on canvas
+      };
+      img.src = baseUrl + "&t=" + Date.now(); // Cache-busting
     }
 
     updateChart();
-    setInterval(updateChart, 1000); // refresh every 1 second
+    setInterval(updateChart, 1000); // Refresh every 1 second
   </script>
 </body>
 </html>
