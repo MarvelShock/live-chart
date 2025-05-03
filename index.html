@@ -1,35 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <title>Live Chart</title>
-  <style>
-    html, body {
-      margin: 0;
-      background: transparent;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    img {
-      background: transparent;
-    }
-  </style>
-</head>
-<body>
-  <img id="chart" width="800" height="600" />
+<img id="chart" width="800" height="600" style="background-color: transparent;" />
 
-  <script>
-    const chart = document.getElementById("chart");
+<script>
+  function refreshChart() {
+    const img = document.getElementById("chart");
     const baseUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-B0pV5OgbRMGqo1doAJcesVhmDOTcmhhpaQqAlzluQGmC-uQwcUEU3iSjqkX1Tku5-ThDliYq_L7z/pubchart?oid=473830938&format=image";
+    img.src = baseUrl + "&t=" + new Date().getTime(); // cache-buster
+  }
 
-    function refreshChart() {
-      chart.src = baseUrl + "&t=" + Date.now(); // cache-buster
-    }
-
-    refreshChart(); // initial load
-    setInterval(refreshChart, 1000); // update every 1 second
-  </script>
-</body>
-</html>
+  refreshChart(); // initial load
+  setInterval(refreshChart, 30000); // refresh every 30 seconds
+</script>
