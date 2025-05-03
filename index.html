@@ -1,12 +1,36 @@
-<img id="chart" width="800" height="600" style="background-color: transparent;" />
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Live Chart</title>
+  <style>
+    html, body {
+      margin: 0;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="chart" width="800" height="600"></canvas>
 
-<script>
-  function refreshChart() {
-    const img = document.getElementById("chart");
+  <script>
+    const canvas = document.getElementById("chart");
+    const ctx = canvas.getContext("2d");
     const baseUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR-B0pV5OgbRMGqo1doAJcesVhmDOTcmhhpaQqAlzluQGmC-uQwcUEU3iSjqkX1Tku5-ThDliYq_L7z/pubchart?oid=473830938&format=image";
-    img.src = baseUrl + "&t=" + new Date().getTime(); // cache-buster
-  }
 
-  refreshChart(); // initial load
-  setInterval(refreshChart, 30000); // refresh every 30 seconds
-</script>
+    function updateChart() {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      img.src = baseUrl + "&t=" + Date.now(); // cache-busting
+    }
+
+    updateChart();
+    setInterval(updateChart, 1000); // refresh every 1 second
+  </script>
+</body>
+</html>
